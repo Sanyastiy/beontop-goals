@@ -4,8 +4,8 @@
  * Plugin Name: Beontop Goals
  * Description: BeOnTop Goals Plugin
  * Author URI:  https://www.beontop.ae/
- * Author:      BeOnTop
- * Version:     0.0.1
+ * Author:      Alex K and Alex S
+ * Version:     1.1
  *
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -61,11 +61,35 @@ function bg_scripts_block_field()
 {
     $placeholder = "/**
     Example for Contact Form 7
+
     document.addEventListener('wpcf7mailsent', function sendMail(event) {
         if ('form_id' == event.detail.contactFormId) {
             goalsModule.trigger('goalName', 'goalCategory');
         }
     }, false);
+
+    Example for WPForms
+
+    (function repeat(){
+        var element = document.getElementById('wpforms-confirmation-57');
+        if(!element) return setTimeout(repeat, 1000);
+        goalDone('Email Feedback','Email');
+    }());
+
+    Example for direct link event
+
+    var body = document.querySelector('body');
+    body.addEventListener('click', function (event) {
+        var target = event.target;
+        if (target.tagName !== 'a') {
+            target = target.closest('a');
+            if (target == null) return;
+        }
+
+    if (target.href.includes('/contacts/')) goalsModule.trigger('Send Request', 'Clicks');
+
+    }, { passive: true });
+
 */
 
       ";

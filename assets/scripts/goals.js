@@ -70,13 +70,35 @@ var goalsModule = function () {
             if (target == null) return;
         }
 
-        if (target.href.substr(0, 4) === 'tel:' && window.innerWidth < 1000) goalDone('Click on Phone', 'Clicks');
-        if (target.href.substr(0, 7) === 'mailto:') goalDone('Click on Email', 'Clicks');
-        if (target.href.substr(0, 25) === 'https://api.whatsapp.com/') goalDone('Click on WhatsApp', 'Clicks');
-        if (target.href.substr(0, 14) === 'https://wa.me/') goalDone('Click on WhatsApp', 'Clicks');
-        if (target.href.substr(0, 3) === 'tg:') goalDone('Click on Telegram', 'Clicks');
+        if (target.href.includes('tel:' && window.innerWidth < 1000)) goalDone('Click on Phone', 'Clicks');
+        if (target.href.includes('mailto:')) goalDone('Click on Email', 'Clicks');
+
+        if (target.href.includes('https://www.facebook.com/')) goalDone('Click on FaceBook', 'Clicks');
+        if (target.href.includes('https://api.whatsapp.com/')) goalDone('Click on WhatsApp', 'Clicks');
+        if (target.href.includes('https://wa.me/')) goalDone('Click on WhatsApp', 'Clicks');
+        if (target.href.includes('tg:')) goalDone('Click on Telegram', 'Clicks');
+        if (target.href.includes('linkedin.com/company')) goalDone('Click on LinkedIn', 'Clicks');
+        if (target.href.includes('instagram.com')) goalDone('Click on Instagram', 'Clicks');
+
+        if (target.href.includes('/checkout/')) goalDone('Place Order', 'Ecommerce');
+        if (target.href.includes('?action=yith-woocompare-add-product')) goalDone('Add to Compare', 'Ecommerce');
+        if (window.location.href.includes('order-received')) goalDone('Purchase', 'Ecommerce');
+        
+        if (targetButton.tagName !== 'button') {
+            targetButton = targetButton.closest('button');
+            if (targetButton == null) return;
+        }
+
+        if (targetButton.name.includes('add-to-cart')) goalDone('Add to Cart', 'Ecommerce');
+
     }, { passive: true });
 
+    //Tawk form integration added
+    Tawk_API = Tawk_API || {};
+            Tawk_API.onOfflineSubmit = function (data) {
+                goalDone('Tawk Form', 'Email');
+            };
+            
     return Object.freeze({
         trigger: function trigger(name, params) {
             goalDone(name, params);
