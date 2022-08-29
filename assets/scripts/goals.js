@@ -47,11 +47,11 @@ var goalsModule = function () {
 
     var goalDone = function goalDone(goalName, goalCategory) {
         if (isMultilang) {
-            if (App.lang) goalName = goalName + ' ' + (App.lang[0].toUpperCase() + App.lang.slice(1));else console.warn('У тега html отсутствует атрибут lang');
+            if (App.lang) goalName = goalName + ' ' + (App.lang[0].toUpperCase() + App.lang.slice(1)); else console.warn('У тега html отсутствует атрибут lang');
         }
 
         Object.keys(window).forEach(function (key) {
-            if (key.substr(0, 9) === 'yaCounter') window[key].reachGoal(goalName, function () {});
+            if (key.substr(0, 9) === 'yaCounter') window[key].reachGoal(goalName, function () { });
         });
 
         if (typeof ga !== 'undefined') window.ga('send', 'event', goalCategory, goalName);
@@ -70,7 +70,7 @@ var goalsModule = function () {
             if (target == null) return;
         }
 
-        if (target.href.substr(0, 4) === 'tel:') goalDone('Click on Phone', 'Clicks');
+        if (target.href.substr(0, 4) === 'tel:' && window.innerWidth < 1000) goalDone('Click on Phone', 'Clicks');
         if (target.href.substr(0, 7) === 'mailto:') goalDone('Click on Email', 'Clicks');
         if (target.href.substr(0, 25) === 'https://api.whatsapp.com/') goalDone('Click on WhatsApp', 'Clicks');
         if (target.href.substr(0, 14) === 'https://wa.me/') goalDone('Click on WhatsApp', 'Clicks');
