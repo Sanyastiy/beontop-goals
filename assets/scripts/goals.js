@@ -51,7 +51,7 @@ var goalsModule = function () {
         }
 
         Object.keys(window).forEach(function (key) {
-            if (key.includes(yaCounter)) window[key].reachGoal(goalName, function () { });
+            if (key.includes('yaCounter')) window[key].reachGoal(goalName, function () { });
         });
 
         if (typeof ga !== 'undefined') window.ga('send', 'event', goalCategory, goalName);
@@ -64,13 +64,14 @@ var goalsModule = function () {
 
     body.addEventListener('click', function (event) {
         var target = event.target;
+        var targetButton = event.target;
 
         if (target.tagName !== 'a') {
             target = target.closest('a');
             if (target == null) return;
         }
 
-        if (target.href.includes('tel:' && window.innerWidth < 1000)) goalDone('Click on Phone', 'Clicks');
+        if (target.href.includes('tel:') && window.innerWidth < 1000) goalDone('Click on Phone', 'Clicks');
         if (target.href.includes('mailto:')) goalDone('Click on Email', 'Clicks');
 
         if (target.href.includes('https://www.facebook.com/')) goalDone('Click on FaceBook', 'Clicks');
@@ -94,7 +95,7 @@ var goalsModule = function () {
     }, { passive: true });
 
     //Tawk form integration added
-    if (Tawk_API) {
+    if (typeof (Tawk_API) != "undefined") {
         Tawk_API = Tawk_API || {};
         Tawk_API.onOfflineSubmit = function (data) {
             goalDone('Tawk Form', 'Email');
