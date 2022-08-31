@@ -51,7 +51,7 @@ var goalsModule = function () {
         }
 
         Object.keys(window).forEach(function (key) {
-            if (key.substr(0, 9) === 'yaCounter') window[key].reachGoal(goalName, function () { });
+            if (key.includes(yaCounter)) window[key].reachGoal(goalName, function () { });
         });
 
         if (typeof ga !== 'undefined') window.ga('send', 'event', goalCategory, goalName);
