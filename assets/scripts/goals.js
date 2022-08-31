@@ -83,7 +83,7 @@ var goalsModule = function () {
         if (target.href.includes('/checkout/')) goalDone('Place Order', 'Ecommerce');
         if (target.href.includes('?action=yith-woocompare-add-product')) goalDone('Add to Compare', 'Ecommerce');
         if (window.location.href.includes('order-received')) goalDone('Purchase', 'Ecommerce');
-        
+
         if (targetButton.tagName !== 'button') {
             targetButton = targetButton.closest('button');
             if (targetButton == null) return;
@@ -94,11 +94,13 @@ var goalsModule = function () {
     }, { passive: true });
 
     //Tawk form integration added
-    Tawk_API = Tawk_API || {};
-            Tawk_API.onOfflineSubmit = function (data) {
-                goalDone('Tawk Form', 'Email');
-            };
-            
+    if (Tawk_API) {
+        Tawk_API = Tawk_API || {};
+        Tawk_API.onOfflineSubmit = function (data) {
+            goalDone('Tawk Form', 'Email');
+        };
+    }
+
     return Object.freeze({
         trigger: function trigger(name, params) {
             goalDone(name, params);
