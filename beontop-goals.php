@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Beontop Goals
- * Description: BeOnTop Goals Plugin
+ * Description: Beontop Goals Plugin for Analytics
  * Author URI:  https://www.beontop.ae/
  * Author:      Alex K and Alex S
  * Version:     1.2
