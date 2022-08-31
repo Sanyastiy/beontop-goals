@@ -75,8 +75,7 @@ var goalsModule = function () {
         if (target.href.includes('mailto:')) goalDone('Click on Email', 'Clicks');
 
         if (target.href.includes('https://www.facebook.com/')) goalDone('Click on FaceBook', 'Clicks');
-        if (target.href.includes('https://api.whatsapp.com/')) goalDone('Click on WhatsApp', 'Clicks');
-        if (target.href.includes('https://wa.me/')) goalDone('Click on WhatsApp', 'Clicks');
+        if (target.href.includes('https://api.whatsapp.com/') || target.href.includes('https://wa.me/')) goalDone('Click on WhatsApp', 'Clicks');
         if (target.href.includes('tg:')) goalDone('Click on Telegram', 'Clicks');
         if (target.href.includes('linkedin.com/company')) goalDone('Click on LinkedIn', 'Clicks');
         if (target.href.includes('instagram.com')) goalDone('Click on Instagram', 'Clicks');
