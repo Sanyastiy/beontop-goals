@@ -5,7 +5,7 @@
  * Description: BeOnTop Goals Plugin
  * Author URI:  https://www.beontop.ae/
  * Author:      Alex K and Alex S
- * Version:     1.1
+ * Version:     1.2
  *
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,7 +17,7 @@
 add_action('admin_menu', 'bg_add_settings_page');
 function bg_add_settings_page()
 {
-    add_options_page('Goals Settings', 'Goals Settings', 'manage_options', 'primer_slug', 'bg_settings_page');
+    add_options_page('Goals Settings for Analytics', 'Goals Settings for Analytics', 'manage_options', 'primer_slug', 'bg_settings_page');
 }
 
 function bg_settings_page()
@@ -52,48 +52,17 @@ function plugin_settings()
     add_settings_section('bg_main', 'Main', '', 'bg_page');
 
     // параметры: $id, $title, $callback, $page, $section, $args
-    add_settings_field('bg_head_block', 'Code in the head tag', 'bg_head_block_field', 'bg_page', 'bg_main');
-    add_settings_field('bg_custom_js', 'Custom JavaScript', 'bg_scripts_block_field', 'bg_page', 'bg_main');
+    add_settings_field('bg_head_block', 'HTML Code in the head tag', 'bg_head_block_field', 'bg_page', 'bg_main');
+    add_settings_field('bg_custom_js', 'Custom JavaScript in script tag', 'bg_scripts_block_field', 'bg_page', 'bg_main');
 }
 
-## Заполняем опцию 1
+## Заполняем Custom JavaScript
 function bg_scripts_block_field()
 {
-    $placeholder = "/**
-    Example for Contact Form 7
-
-    document.addEventListener('wpcf7mailsent', function sendMail(event) {
-        if ('form_id' == event.detail.contactFormId) {
-            goalsModule.trigger('goalName', 'goalCategory');
-        }
-    }, false);
-
-    Example for WPForms
-
-    (function repeat(){
-        var element = document.getElementById('wpforms-confirmation-57');
-        if(!element) return setTimeout(repeat, 1000);
-        goalDone('Email Feedback','Email');
-    }());
-
-    Example for direct link event
-
-    var body = document.querySelector('body');
-    body.addEventListener('click', function (event) {
-        var target = event.target;
-        if (target.tagName !== 'a') {
-            target = target.closest('a');
-            if (target == null) return;
-        }
-
-    if (target.href.includes('/contacts/')) goalsModule.trigger('Send Request', 'Clicks');
-
-    }, { passive: true });
-
-*/
-
-      ";
+    $placeholder = "/** COMMENTED SECTION" . strval(file_get_contents(plugins_url('/assets/scripts/placeholder.js', __FILE__))) . "COMMENTED SECTION END */";
+    //check if some code inside of Custom JS block
     $val = get_option('bg_scripts_block');
+    //if empty (only on first install of plugin) add basic placeholder
     $val = $val ? $val : $placeholder;
     // $val = str_replace(['<script>', '</script>'], ['',''], $val);
 ?>
@@ -123,7 +92,7 @@ function sanitize_callback_scripts_block($val)
 add_action('init', 'register_script');
 function register_script()
 {
-    wp_register_script('bgoals', plugins_url('/assets/scripts/goals.js', __FILE__), array(), '1.0.0', true);
+    wp_register_script('bgoals', plugins_url('/assets/scripts/goals.js', __FILE__), array(), '1.2', true);
     wp_enqueue_script('bgoals');
 }
 
