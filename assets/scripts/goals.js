@@ -79,11 +79,9 @@ var goalsModule = function () {
         if (target.href.includes('tg:')) goalDone('Click on Telegram', 'Clicks');
         if (target.href.includes('linkedin.com/company')) goalDone('Click on LinkedIn', 'Clicks');
         if (target.href.includes('instagram.com')) goalDone('Click on Instagram', 'Clicks');
-
         if (target.href.includes('/checkout/')) goalDone('Place Order', 'Ecommerce');
         if (target.href.includes('?action=yith-woocompare-add-product')) goalDone('Add to Compare', 'Ecommerce');
-        if (window.location.href.includes('order-received')) goalDone('Purchase', 'Ecommerce');
-
+      
         if (targetButton.tagName !== 'button') {
             targetButton = targetButton.closest('button');
             if (targetButton == null) return;
@@ -92,7 +90,9 @@ var goalsModule = function () {
         if (targetButton.name.includes('add-to-cart')) goalDone('Add to Cart', 'Ecommerce');
 
     }, { passive: true });
-
+    
+    if (window.location.href.includes('order-received')) goalDone('Purchase', 'Ecommerce');
+    
     //Tawk form integration added
     if (typeof (Tawk_API) != "undefined") {
         Tawk_API = Tawk_API || {};
