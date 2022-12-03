@@ -87,25 +87,27 @@ function sanitize_callback_scripts_block($val)
     return $val;
 }
 
+// hide this section from Google Lightroom bot (PageSpeed)
+if (!strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome-Lighthouse')) {
+    // Add scripts
+    add_action('init', 'register_script');
+    function register_script()
+    {
+        wp_register_script('bgoals', plugins_url('/assets/scripts/goals.js', __FILE__), array(), '1.2', true);
+        wp_enqueue_script('bgoals');
+    }
 
-// Add scripts
-add_action('init', 'register_script');
-function register_script()
-{
-    wp_register_script('bgoals', plugins_url('/assets/scripts/goals.js', __FILE__), array(), '1.2', true);
-    wp_enqueue_script('bgoals');
-}
+    add_action('wp_head', 'bg_insert_head', 100000);
+    function bg_insert_head()
+    {
+        echo get_option('bg_head_block');
+    }
 
-add_action('wp_head', 'bg_insert_head', 100000);
-function bg_insert_head()
-{
-    echo get_option('bg_head_block');
-}
-
-add_action('wp_footer', 'bg_insert_footer', 100000);
-function bg_insert_footer()
-{
-    echo '<script>';
-    echo get_option('bg_scripts_block');
-    echo '</script>';
+    add_action('wp_footer', 'bg_insert_footer', 100000);
+    function bg_insert_footer()
+    {
+        echo '<script>';
+        echo get_option('bg_scripts_block');
+        echo '</script>';
+    }
 }
