@@ -4,8 +4,8 @@
  * Plugin Name: Beontop Goals
  * Description: Beontop Goals Plugin for Analytics
  * Author URI:  https://www.beontop.ae/
- * Author:      Alex K and Alex S
- * Version:     1.2
+ * Author:      Alex K, Alex S and Alex G
+ * Version:     1.3
  *
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
