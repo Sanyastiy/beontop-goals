@@ -66,7 +66,7 @@ var goalsModule = function () {
         var target = event.target;
         var targetButton = event.target;
 
-        if (target.tagName !== 'a') {
+        if (target.tagName !== 'A') {
             target = target.closest('a');
             if (target == null) return;
         }
@@ -82,7 +82,7 @@ var goalsModule = function () {
         if (target.href.includes('/checkout/')) goalDone('Place Order', 'Ecommerce');
         if (target.href.includes('?action=yith-woocompare-add-product')) goalDone('Add to Compare', 'Ecommerce');
       
-        if (targetButton.tagName !== 'button') {
+        if (targetButton.tagName !== 'BUTTON') {
             targetButton = targetButton.closest('button');
             if (targetButton == null) return;
         }
