@@ -47,7 +47,9 @@ var goalsModule = function () {
 
     var goalDone = function goalDone(goalName, goalCategory) {
         if (isMultilang) {
-            if (App.lang) goalName = goalName + ' ' + (App.lang[0].toUpperCase() + App.lang.slice(1)); else console.warn('У тега html отсутствует атрибут lang');
+            const lang = document.getElementsByTagName('html')[0].getAttribute('lang') || null;
+            if (lang) goalName = `${goalName} ${lang[0].toUpperCase() + lang.slice(1)}`;
+            else console.warn('У тега html отсутствует атрибут lang');
         }
 
         Object.keys(window).forEach(function (key) {
