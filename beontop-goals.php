@@ -5,7 +5,7 @@
  * Description: Beontop Goals Plugin for Analytics
  * Author URI:  https://www.beontop.ae/
  * Author:      Alex K, Alex S and Alex G
- * Version:     1.3
+ * Version:     1.5
  *
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,6 +47,7 @@ function plugin_settings()
     // параметры: $option_group, $option_name, $sanitize_callback
     register_setting('bg_main_settings', 'bg_scripts_block', array('sanitize_callback' => 'sanitize_callback_scripts_block'));
     register_setting('bg_main_settings', 'bg_head_block');
+    register_setting('bg_main_settings', 'bg_gtm_block');
 
     // параметры: $id, $title, $callback, $page
     add_settings_section('bg_main', 'Main', '', 'bg_page');
@@ -54,6 +55,18 @@ function plugin_settings()
     // параметры: $id, $title, $callback, $page, $section, $args
     add_settings_field('bg_head_block', 'HTML Code in the head tag', 'bg_head_block_field', 'bg_page', 'bg_main');
     add_settings_field('bg_custom_js', 'Custom JavaScript in script tag', 'bg_scripts_block_field', 'bg_page', 'bg_main');
+    add_settings_field('bg_gtm_block', 'Google Tag Manager ID (for goals tasks)', 'bg_gtm_block_field', 'bg_page', 'bg_main');
+}
+
+function bg_gtm_block_field()
+{
+    $val = get_option('bg_gtm_block');
+    $val = $val ? $val : null;
+    // test echo below
+    // echo get_option('bg_gtm_block') ? 'gtm field NOT empty' : 'gtm field empty';
+?>
+    <input type="text" name="bg_gtm_block" value="<?php echo esc_attr($val) ?>" />
+<?php
 }
 
 ## Заполняем Custom JavaScript
@@ -97,6 +110,49 @@ if (!strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome-Lighthouse')) {
         wp_enqueue_script('bgoals');
     }
 
+    // Block for GTM output
+    add_action('wp_head', 'bg_insert_gtm_head', 100001);
+    function bg_insert_gtm_head()
+    {
+        if (get_option('bg_gtm_block') != '') {
+            echo '
+        <script id="gtmkit-js-before" data-cfasync="false" data-nowprocket="" data-cookieconsent="ignore">
+		window.gtmkit_settings = {"datalayer_name":"dataLayer","console_log":false};
+		window.gtmkit_data = {};
+		window.dataLayer = window.dataLayer || [];		
+        </script>
+        <script id="gtmkit-datalayer-js-before" data-cfasync="false" data-nowprocket="" data-cookieconsent="ignore">
+        const gtmkit_dataLayer_content = {"pageType":"frontpage"};
+        dataLayer.push( gtmkit_dataLayer_content );
+        </script>
+        <!-- Google Tag Manager -->
+        <script id="gtmkit-container-js-after" data-cfasync="false" data-nowprocket="" data-cookieconsent="ignore">';
+            echo "/* Google Tag Manager */
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','";
+            echo get_option('bg_gtm_block');
+            echo "');";
+            echo '</script><!-- End Google Tag Manager -->';
+        }
+    }
+    add_action('wp_body_open', 'bg_insert_gtm_body', 100001);
+    function bg_insert_gtm_body()
+    {
+        if (get_option('bg_gtm_block') != '') {
+            echo '<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=';
+            echo get_option('bg_gtm_block');
+            echo '"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+        <script>
+gtag("event", "page_view", {send_to: "GLA"});
+</script>';
+        }
+    }
+    // End of Block for GTM output
+
+
     add_action('wp_head', 'bg_insert_head', 100000);
     function bg_insert_head()
     {
@@ -108,6 +164,6 @@ if (!strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome-Lighthouse')) {
     {
         echo '<script>';
         echo get_option('bg_scripts_block');
-        echo '</script>';
+        echo '</nscript>';
     }
 }
